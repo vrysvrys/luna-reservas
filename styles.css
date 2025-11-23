@@ -1,4 +1,3 @@
-/* Global Styles */
 body {
   font-family: "Inter", Arial, sans-serif;
   background: #f7fafb;
@@ -6,10 +5,9 @@ body {
 }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
 
-/* App Header */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -24,7 +22,6 @@ body {
   font-weight: bold;
 }
 
-/* Buttons */
 .btn-primary {
   background: #1e78fd;
   color: #fff;
@@ -32,11 +29,6 @@ body {
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 500;
-}
-
-.btn-primary:hover {
-  background: #1563d0;
 }
 
 .btn-secondary {
@@ -49,10 +41,6 @@ body {
   margin-left: 1em;
 }
 
-.btn-secondary:hover {
-  background: #e0e8f5;
-}
-
 .btn-danger {
   background: #f34;
   color: #fff;
@@ -62,11 +50,6 @@ body {
   cursor: pointer;
 }
 
-.btn-danger:hover {
-  background: #d32;
-}
-
-/* Login */
 .login-container {
   display: flex;
   align-items: center;
@@ -89,7 +72,6 @@ body {
   margin-top: 1em;
 }
 
-/* Alerts */
 .alert {
   margin-top: 1em;
   padding: 0.6em 1em;
@@ -106,12 +88,10 @@ body {
   color: #262;
 }
 
-/* App Content */
 .app-content {
   padding: 1.3em;
 }
 
-/* Floor Plan */
 .floor-plan {
   display: flex;
   flex-wrap: wrap;
@@ -127,14 +107,13 @@ body {
   padding: 1em;
   margin-bottom: 1em;
   cursor: pointer;
-  transition: 0.1s;
+  transition: .1s;
   border-color: #e0e0e0;
 }
 
 .mesa-card:hover,
 .mesa-card.selected {
   border-color: #1e78fd;
-  box-shadow: 0 2px 8px rgba(30,120,253,0.15);
 }
 
 .mesa-card.llegado {
@@ -149,8 +128,6 @@ body {
 
 .mesa-card .title {
   font-weight: bold;
-  display: block;
-  margin-bottom: 0.3em;
 }
 
 .mesa-card .cap {
@@ -159,7 +136,6 @@ body {
   color: #666;
 }
 
-/* Detail Panel */
 .detail-panel {
   background: #fff;
   border-radius: 12px;
@@ -176,7 +152,6 @@ body {
   border-left: 4px solid #1e78fd;
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -218,7 +193,6 @@ body {
   margin-top: 1.2em;
 }
 
-/* Forms */
 .form-group {
   margin-bottom: 1em;
 }
@@ -227,7 +201,6 @@ label {
   display: block;
   font-weight: 600;
   margin-bottom: 0.3em;
-  color: #333;
 }
 
 input, textarea {
@@ -235,34 +208,25 @@ input, textarea {
   padding: 0.4em;
   border-radius: 6px;
   border: 1px solid #dde;
-  font-family: inherit;
-  font-size: 1em;
-  box-sizing: border-box;
 }
 
 input:focus, textarea:focus {
   outline: none;
   border-color: #1e78fd;
-  box-shadow: 0 0 0 3px rgba(30,120,253,0.1);
 }
 
 textarea {
   resize: vertical;
-  font-family: "Inter", Arial, sans-serif;
 }
 
-/* Responsive */
 @media (max-width: 700px) {
   .app-content {
     padding: 0.6em;
   }
-  
   .modal-content {
     min-width: 96vw;
   }
-  
   .login-card {
     min-width: 90vw;
-    padding: 1.5rem 1.5rem;
   }
 }
