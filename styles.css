@@ -1,0 +1,268 @@
+/* Global Styles */
+body {
+  font-family: "Inter", Arial, sans-serif;
+  background: #f7fafb;
+  margin: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* App Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #222;
+  color: #fff;
+  padding: 1rem;
+}
+
+.logo, .app-header h1 {
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Buttons */
+.btn-primary {
+  background: #1e78fd;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background: #1563d0;
+}
+
+.btn-secondary {
+  background: #f0f4fa;
+  color: #222;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 1em;
+}
+
+.btn-secondary:hover {
+  background: #e0e8f5;
+}
+
+.btn-danger {
+  background: #f34;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #d32;
+}
+
+/* Login */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f7fafb;
+}
+
+.login-card {
+  background: #fff;
+  padding: 2rem 3rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.1);
+  min-width: 350px;
+}
+
+.login-question {
+  font-size: 1.1rem;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+}
+
+/* Alerts */
+.alert {
+  margin-top: 1em;
+  padding: 0.6em 1em;
+  border-radius: 6px;
+}
+
+.alert-error {
+  background: #fee;
+  color: #b22;
+}
+
+.alert-success {
+  background: #cfe;
+  color: #262;
+}
+
+/* App Content */
+.app-content {
+  padding: 1.3em;
+}
+
+/* Floor Plan */
+.floor-plan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.mesa-card {
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  min-width: 120px;
+  padding: 1em;
+  margin-bottom: 1em;
+  cursor: pointer;
+  transition: 0.1s;
+  border-color: #e0e0e0;
+}
+
+.mesa-card:hover,
+.mesa-card.selected {
+  border-color: #1e78fd;
+  box-shadow: 0 2px 8px rgba(30,120,253,0.15);
+}
+
+.mesa-card.llegado {
+  opacity: 0.6;
+  border-color: #4caf50;
+}
+
+.mesa-card.llegado .title {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.mesa-card .title {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.3em;
+}
+
+.mesa-card .cap {
+  display: block;
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* Detail Panel */
+.detail-panel {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.detail-item {
+  background: #f5faff;
+  border-radius: 10px;
+  margin-bottom: 0.7em;
+  padding: 1em;
+  border-left: 4px solid #1e78fd;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: rgba(0,0,0,0.3);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2em;
+  border-radius: 12px;
+  min-width: 310px;
+  box-shadow: 0 6px 40px rgba(0,0,0,0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7em;
+  margin-top: 1.2em;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1em;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+  color: #333;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 0.4em;
+  border-radius: 6px;
+  border: 1px solid #dde;
+  font-family: inherit;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #1e78fd;
+  box-shadow: 0 0 0 3px rgba(30,120,253,0.1);
+}
+
+textarea {
+  resize: vertical;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .app-content {
+    padding: 0.6em;
+  }
+  
+  .modal-content {
+    min-width: 96vw;
+  }
+  
+  .login-card {
+    min-width: 90vw;
+    padding: 1.5rem 1.5rem;
+  }
+}
