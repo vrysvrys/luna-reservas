@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservas Delaostia</title>
+  <style>
+    body { font-family: "Inter", Arial, sans-serif; background: #f7fafb; margin:0;}
+    .hidden { display: none; }
+    .app-header { display: flex; justify-content: space-between; align-items: center; background: #222; color: #fff; padding: 1rem;}
+    .logo, .app-header h1 { margin:0; font-weight: bold; }
+    .btn-primary { background: #1e78fd; color: #fff; border:none; padding: 0.5rem 1.2rem; border-radius:6px; cursor:pointer;}
+    .btn-secondary { background: #f0f4fa; color: #222; border:none; padding: 0.5rem 1rem; border-radius:4px; cursor:pointer; margin-left: 1em;}
+    .btn-danger { background: #f34; color:#fff; border:none; padding:0.5rem 1rem; border-radius:4px; cursor:pointer;}
+    .login-container { display:flex; align-items:center; justify-content:center; min-height: 100vh; background: #f7fafb;}
+    .login-card { background:#fff; padding:2rem 3rem; border-radius:14px; box-shadow:0 4px 32px #0002;}
+    .login-question { font-size:1.1rem; margin-bottom:0.5em;}
+    .alert { margin-top:1em; padding:0.6em 1em; border-radius:6px;}
+    .alert-error { background:#fee; color:#b22;}
+    .alert-success { background:#cfe; color:#262;}
+    .app-content { padding:1.3em;}
+    .floor-plan { display: flex; flex-wrap:wrap; gap:1em; margin-bottom:1em;}
+    .mesa-card { background:#fff; border:2px solid #eee; border-radius:8px; min-width:120px; padding:1em; margin-bottom:1em; cursor:pointer; transition:.1s;border-color:#e0e0e0;}
+    .mesa-card.selected, .mesa-card:hover { border-color: #1e78fd;}
+    .mesa-card .title { font-weight:bold;}
+    .detail-panel { background:#fff; border-radius:12px; box-shadow:0 2px 8px #0001; padding:1em; margin-bottom:1em; }
+    .detail-item {background:#f5faff; border-radius:10px; margin-bottom:0.7em; padding:1em;}
+    .modal {display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:40; background:#0005; align-items:center; justify-content:center;}
+    .modal-content {background:#fff; padding:2em; border-radius:12px; min-width:310px; box-shadow:0 6px 40px #0008;}
+    .modal-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:1em;}
+    .modal-footer {display:flex; justify-content:flex-end; gap:0.7em; margin-top:1.2em;}
+    .form-group {margin-bottom:1em;}
+    label {display:block; font-weight:600; margin-bottom:0.3em;}
+    input,textarea {width: 100%; padding:0.4em; border-radius: 6px; border:1px solid #dde;}
+    @media(max-width:700px){.app-content { padding:0.6em;} .modal-content{min-width:96vw;}}
+  </style>
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="login-screen" class="login-container">
+    <div class="login-card">
+      <h1 class="logo">🍽️ RESERVAS DELAOSTIA</h1>
+      <form id="login-form">
+        <p class="login-question">¿Quién es la mejor camarera del local?</p>
+        <input type="text" id="login-answer" placeholder="Escribe la respuesta..." autocomplete="off" required>
+        <button type="submit" class="btn-primary">ACCEDER</button>
+        <div id="login-error" class="alert alert-error hidden"></div>
+        <div id="login-success" class="alert alert-success hidden">✓ ¡Acceso permitido!</div>
+      </form>
+    </div>
+  </div>
+  <!-- APP -->
+  <div id="main-app" class="hidden">
+    <header class="app-header">
+      <h1>🍽️ RESERVAS DELAOSTIA</h1>
+      <div>
+        <button id="btn-lista-reservas" class="btn-secondary">📋 Lista de reservas</button>
+        <button id="btn-logout" class="btn-secondary">Salir</button>
+      </div>
+    </header>
+    <div class="app-content">
+      <div id="screen-plano">
+        <h2>Plano de Mesas</h2>
+        <div class="floor-plan" id="floor-plan-inner"></div>
+        <div id="details-panel"></div>
+      </div>
+      <div id="reservas-lista-panel" class="hidden">
+        <h2>📋 Reservas activas</h2>
+        <div id="reservas-lista"></div>
+        <button id="btn-volver-plano" class="btn-primary">← Volver al plano</button>
+      </div>
+    </div>
+    <div id="modalReserva" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📝 Gestionar Reserva</h2>
+          <button type="button" id="btn-close-modal" class="btn-secondary">✕</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="modalMesaId">
+          <div class="form-group"><label>Mesa</label><input type="text" id="modalMesaName" disabled></div>
+          <div class="form-group"><label>Nombre cliente *</label><input type="text" id="modalNombre" required></div>
+          <div class="form-group"><label>Comensales *</label><input type="number" id="modalComensales" min="1" max="20" required></div>
+          <div class="form-group"><label>Desde *</label><input type="time" id="modalDesde" required></div>
+          <div class="form-group"><label>Hasta *</label><input type="time" id="modalHasta" required></div>
+          <div class="form-group"><label>Notas</label><textarea id="modalNotas" rows="2"></textarea></div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-eliminar" class="btn-danger" type="button">Eliminar</button>
+          <button id="btn-cancelar-modal" class="btn-secondary" type="button">Cancelar</button>
+          <button id="btnCrearReserva" class="btn-primary" type="button">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  // ---- DATOS ----
+  const mesas = [
+    {id:"mesa1", nombre:"Mesa 1", capacidad:4},
+    {id:"mesa2", nombre:"Mesa 2", capacidad:2},
+    {id:"mesa3", nombre:"Mesa 3", capacidad:6},
+    {id:"mesa4", nombre:"Mesa 4", capacidad:8},
+    {id:"bar1", nombre:"Barra 1", capacidad:2}
+  ];
+  function cargarReservas() {
+    try { return JSON.parse(localStorage.getItem("reservasData")||"{}"); }
+    catch { return {}; }
+  }
+  function guardarReservas(data) {
+    localStorage.setItem("reservasData", JSON.stringify(data));
+  }
+  let reservasData = cargarReservas();
+
+  // ---- LOGIN ----
+  document.getElementById("login-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    const respuesta = document.getElementById("login-answer").value.trim().toLowerCase();
+    if (respuesta === "luna") {
+      document.getElementById("login-error").classList.add("hidden");
+      document.getElementById("login-success").classList.remove("hidden");
+      setTimeout(()=>{
+        document.getElementById("login-screen").classList.add("hidden");
+        document.getElementById("main-app").classList.remove("hidden");
+        renderFloorPlan();
+      }, 400);
+    } else {
+      document.getElementById("login-error").textContent = "Respuesta incorrecta";
+      document.getElementById("login-error").classList.remove("hidden");
+      document.getElementById("login-success").classList.add("hidden");
+    }
+  });
+  document.getElementById("btn-logout").onclick = () => {
+    document.getElementById("main-app").classList.add("hidden");
+    document.getElementById("login-screen").classList.remove("hidden");
+    document.getElementById("login-form").reset();
+    document.getElementById("login-error").classList.add("hidden");
+    document.getElementById("login-success").classList.add("hidden");
+  };
+
+  // ---- PLANO MESAS ----
+  let mesaSeleccionada = null;
+  function renderFloorPlan() {
+    const fp = document.getElementById("floor-plan-inner");
+    fp.innerHTML = mesas.map(mesa => {
+      const estado = reservasData[mesa.id] ? "selected" : "";
+      return `<div class="mesa-card ${estado}" onclick="selectTable('${mesa.id}')">
+        <span class="title">${mesa.nombre}</span><br>
+        <span class="cap">${mesa.capacidad} pax</span><br>
+        <span>${reservasData[mesa.id]?.nombre ? "🟢 Reservada" : "⚪ Libre"}</span>
+      </div>`;
+    }).join("");
+    document.getElementById("details-panel").innerHTML = mesaSeleccionada ?
+      renderMesaDetalle(mesaSeleccionada) : "<p>Selecciona una mesa para ver/gestionar reserva.</p>";
+  }
+  window.selectTable = function(mesaId){
+    mesaSeleccionada = mesas.find(m => m.id === mesaId);
+    renderFloorPlan();
+    abrirModalReserva(mesaSeleccionada);
+  };
+  function renderMesaDetalle(mesa) {
+    const r = reservasData[mesa.id];
+    return r && r.nombre ? `
+      <div class="detail-panel">
+        <b>Mesa:</b> ${mesa.nombre} <br>
+        <b>Cliente:</b> ${r.nombre}<br>
+        <b>Comensales:</b> ${r.comensales}<br>
+        <b>Hora:</b> ${r.desde} - ${r.hasta}<br>
+        <b>Notas:</b> ${r.notas || "-"}
+        <br>
+        <button class="btn-primary" onclick="abrirModalReserva(mesaSeleccionada)">Editar reserva</button>
+      </div>
+    ` : `
+      <div class="detail-panel">
+        <b>${mesa.nombre}</b> <br>
+        <span>Mesa libre</span><br>
+        <button class="btn-primary" onclick="abrirModalReserva(mesaSeleccionada)">➕ Reservar</button>
+      </div>
+    `;
+  }
+
+  // ---- MODAL ----
+  function abrirModalReserva(mesa) {
+    document.getElementById("modalReserva").style.display = "flex";
+    document.getElementById("modalMesaId").value = mesa.id;
+    document.getElementById("modalMesaName").value = mesa.nombre;
+    const r = reservasData[mesa.id] || {};
+    document.getElementById("modalNombre").value = r.nombre || "";
+    document.getElementById("modalComensales").value = r.comensales || "";
+    document.getElementById("modalDesde").value = r.desde || "";
+    document.getElementById("modalHasta").value = r.hasta || "";
+    document.getElementById("modalNotas").value = r.notas || "";
+    document.getElementById("btn-eliminar").style.display = r.nombre ? "inline-block" : "none";
+  }
+  document.getElementById("btn-close-modal").onclick = cerrarModal;
+  document.getElementById("btn-cancelar-modal").onclick = cerrarModal;
+  function cerrarModal() { document.getElementById("modalReserva").style.display = "none"; }
+
+  document.getElementById("btnCrearReserva").onclick = function(){
+    const id = document.getElementById("modalMesaId").value;
+    const nombre = document.getElementById("modalNombre").value.trim();
+    const comensales = parseInt(document.getElementById("modalComensales").value);
+    const desde = document.getElementById("modalDesde").value;
+    const hasta = document.getElementById("modalHasta").value;
+    const notas = document.getElementById("modalNotas").value.trim();
+    if (!nombre || !comensales || !desde || !hasta || comensales < 1) {
+      alert("Rellena todos los campos obligatorios.");
+      return;
+    }
+    const mesa = mesas.find(m => m.id === id);
+    if (comensales > mesa.capacidad) {
+      alert("Supera la capacidad máxima de la mesa ("+mesa.capacidad+").");
+      return;
+    }
+    reservasData[id] = {nombre, comensales, desde, hasta, notas};
+    guardarReservas(reservasData);
+    cerrarModal();
+    renderFloorPlan();
+  };
+  document.getElementById("btn-eliminar").onclick = function() {
+    const id = document.getElementById("modalMesaId").value;
+    if (confirm("¿Eliminar la reserva?")) {
+      delete reservasData[id];
+      guardarReservas(reservasData);
+      cerrarModal();
+      renderFloorPlan();
+    }
+  };
+
+  // -- LISTA RESERVAS --
+  document.getElementById('btn-lista-reservas').onclick = () => {
+    document.getElementById('screen-plano').classList.add('hidden');
+    document.getElementById('reservas-lista-panel').classList.remove('hidden');
+    renderListaReservas();
+  };
+  document.getElementById('btn-volver-plano').onclick = () => {
+    document.getElementById('reservas-lista-panel').classList.add('hidden');
+    document.getElementById('screen-plano').classList.remove('hidden');
+    renderFloorPlan();
+  };
+  function renderListaReservas() {
+    const lista = document.getElementById('reservas-lista');
+    const reservas = Object.entries(reservasData)
+      .map(([id, r]) => ({id, ...r}))
+      .filter(r => r.nombre && r.comensales && r.desde && r.hasta);
+    if (!reservas.length) {
+      lista.innerHTML = "<p>No hay reservas activas.</p>";
+      return;
+    }
+    lista.innerHTML = reservas.map(r => `
+      <div class="detail-item">
+        <b>${mesas.find(m => m.id===r.id).nombre}</b> — <span>${r.nombre}</span><br>
+        <small>${r.comensales} pax | ${r.desde} - ${r.hasta}</small><br>
+        <small>${r.notas || ""}</small>
+        <br>
+        <button class="btn-secondary" onclick="selectTable('${r.id}')">Editar</button>
+      </div>
+    `).join('');
+  }
+</script>
+</body>
+</html>
